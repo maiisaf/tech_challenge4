@@ -1,0 +1,16 @@
+[theme]
+# A cor principal (Botões, Sliders, Checkbox, Foco)
+# Estamos usando o mesmo azul do seu título
+primaryColor = "#2E86C1"
+
+# Cor do fundo (Branco para ficar limpo)
+backgroundColor = "#FFFFFF"
+
+# Cor do fundo da barra lateral e inputs (Cinza bem clarinho)
+secondaryBackgroundColor = "#F0F2F6"
+
+# Cor do texto (Preto suave)
+textColor = "#262730"
+
+# Fonte padrão
+font = "sans serif"
