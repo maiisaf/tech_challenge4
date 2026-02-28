@@ -225,6 +225,14 @@ if st.button("🔍 Calcular Risco", disabled=campos):
         """)
         else:
             st.error("Alerta! O modelo identificou alta probabilidade para risco de sobrepeso/obesidade (futuro ou atual). Recomendamos buscar orientação médica especializada.")
+            st.write("""
+    Caso tenha hábitos alimentares saudáveis e pratica exercícios com frequência, mas mesmo assim nossa inteligência articial apontou um alto risco de sobrepeso/obesidade,
+    procure um especialista para realizar um exame de **bioimpedância** para uma confirmação precisa da sua composição corporal, pois IMC não diferencia gordura de músculo.
+    """)
+            with st.expander("📌 Nota importante sobre a IA"):
+                st.info("""
+            Nossa IA ainda não está treinada considerando peso elevado relacionado a maior % de massa magra, por isso alguns resultados podem ser mais rígidos.
+            """)
 
     except FileNotFoundError:
         st.error("Erro: O arquivo 'random_forest_modelo_pipeline.joblib' não foi encontrado na pasta. Verifique se você salvou o modelo.")
