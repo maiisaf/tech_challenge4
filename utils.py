@@ -37,6 +37,27 @@ def feature_eng_trans(df):
         df['atividade_liquida'] = df['freq_atividade_fisica'] - df['tempo_disp_eletronico']
         df['razao_atividade_sed'] = (df['freq_atividade_fisica'] + 1) / (df['tempo_disp_eletronico'] + 1)
 
+    #Cálculo IMC
+
+    if 'peso' in df.columns and 'altura' in df.columns:
+        imc = df['peso']/ (df['altura'] ** 2)
+
+    #Sedentarismo risco: soma 1 se for obeso (imc > 30) e soma 1 se não fiz atividade ( == 0)
+    #Resultado: 0 saudável/ativo, 1 um dos dois ruins e 2 ambos ruins
+
+    if 'freq_atividade_fisica' in df.columns:
+        df['sedentarismo_risco'] =((imc > 30).astype(int) + (df['freq_atividade_fisica'] == 0).astype(int))
+
+
+    #Score de hábitos negativos
+
+    if 'consumo_alimento_calorico' in df.columns and 'consumo_agua_diario' in df.columns and 'monitoramento_caloria' in df.columns and 'tempo_disp_eletronico' in df.columns:
+        df['score_habitos_negativos'] = (
+            df['consumo_alimento_calorico'].astype(int) + 
+            (df['consumo_agua_diario'].apply(lambda x: 1 if x <= 1 else 0)) + 
+            (df['monitoramento_caloria'].apply(lambda x: 1 if x == 0 else 0)) +
+            (df['tempo_disp_eletronico'].apply(lambda x: 1 if x >= 1 else 0)))
+
     # Scores: risco, protetor e equilíbrio
     dic_consome_vegetais = {'Raramente':0, 'Às vezes':1, 'Sempre':2}
     dic_outras_freq = {'Não consome':0, 'Às vezes':1, 'Frequentemente':2, 'Sempre':3}
@@ -56,7 +77,7 @@ def feature_eng_trans(df):
     df['score_risco'] = (consumo_calorico.astype(float) + 
                          fumante.astype(float) + 
                          pd.Series(beliscar).fillna(0).astype(float) + 
-                         pd.Series(trans_consumo_alcool).fillna(0).astype(float))
+                         pd.Series(trans_consumo_alcool).fillna(0).astype(float) + df['hist_familiar'].astype(float))
 
     df['score_protetor'] = (pd.Series(trans_consome_vegetais).fillna(0).astype(float) + 
                             consumo_agua.astype(float) + 

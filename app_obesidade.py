@@ -185,7 +185,7 @@ if st.button("🔍 Calcular Risco", disabled=campos):
     try:
         diretorio_atual = os.path.dirname(os.path.abspath(__file__))
             
-        caminho_modelo = os.path.join(diretorio_atual, 'modelo', 'random_forest_modelo_pipeline.joblib')
+        caminho_modelo = os.path.join(diretorio_atual, 'modelo', 'pipeline_modelo_ajustado_xgb.joblib')
         
         pipeline = joblib.load(caminho_modelo)
 
@@ -210,6 +210,19 @@ if st.button("🔍 Calcular Risco", disabled=campos):
 
         if predicao == 0:
             st.success("Parabéns! Seus hábitos indicam um perfil saudável. Continue assim!")
+            st.write("""
+    Nossa inteligência artificial analisou seu estilo de vida e identificou que seus hábitos 
+    (atividade física, alimentação e consumo de água) são **protetores** para a sua saúde.
+    """)
+    
+            with st.expander("📌 Nota importante sobre seu IMC"):
+                st.info("""
+        Se o seu IMC calculado indicou sobrepeso ou obesidade, mas o resultado da IA foi **Saudável**, 
+        isso pode indicar que você possui uma alta proporção de **massa magra (músculos)**. 
+        
+        O IMC é uma medida geral e não diferencia gordura de músculo. Para uma confirmação precisa 
+        da sua composição corporal, recomendamos realizar um exame de **bioimpedância** com um especialista.
+        """)
         else:
             st.error("Alerta! O modelo identificou alta probabilidade para risco de sobrepeso/obesidade (futuro ou atual). Recomendamos buscar orientação médica especializada.")
 
