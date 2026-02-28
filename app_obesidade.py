@@ -12,7 +12,7 @@ st.set_page_config(page_title = 'Predição de Obesidade',
 
 # Título e descrição
 
-st.markdown("<h1 style='text-align: center; color: #2E86C1;'>🩺 Calculadora de Risco de Obesidade</h1>", unsafe_allow_html=True) 
+st.markdown("<h1 style='text-align: center; color: #2E86C1;'> ⚖️ Calculadora de Risco de Obesidade</h1>", unsafe_allow_html=True) 
 st.markdown("----")
 st.markdown("Responda as perguntas abaixo para que nosso modelo de inteligência artificial analise seu perfil de saúde.")
 
@@ -23,14 +23,14 @@ st.header("1. Dados Pessoais")
 col1, col2 = st.columns(2)
 
 with col1:
-    genero = st.selectbox("Qual o seu gênero?", ["Mulher", "Homem"])
-    idade = st.number_input("Qual a sua idade?", min_value=10, max_value=100, value=25, step=1)
+    genero = st.selectbox("Qual o seu gênero?", ["Mulher", "Homem"], index = None, placeholder = "Selecione uma opção")
+    idade = st.number_input("Qual a sua idade?", min_value=10, max_value=100, value=None, step=1, placeholder = "Digite sua idade")
     hist_familiar = st.radio("Tem histórico de obesidade na família?", ["Sim", "Não"])
 
 with col2:
     #Apenas para cálculo do IMC para mostrar na tela, mas o modelo não usará essas informações
-    altura = st.number_input("Qual a sua altura? (em metros)", min_value=1.00, max_value=2.50, value=1.70, step=0.01)
-    peso = st.number_input("Qual é o seu peso? (em kg)", min_value=30.0, max_value=200.0, value=70.0, step=0.1)
+    altura = st.number_input("Qual a sua altura? (em metros)", min_value=1.00, max_value=2.50, value=None, step=0.01, placeholder = "Digite sua altura (ex. 1.63)")
+    peso = st.number_input("Qual é o seu peso? (em kg)", min_value=30.0, max_value=200.0, value=None, step=0.1, placeholder = "Digite seu peso (ex. 54.5)")
 
 st.markdown("----")
 
@@ -42,9 +42,10 @@ col3, col4 = st.columns(2)
 
 with col3:
     consumo_vegetais = st.select_slider("Com que frequência você come vegetais?", options=["Raramente", "Às vezes", "Sempre"])
-    qtd_refeicoes = st.number_input("Quantas refeições você faz por dia?", min_value=1, max_value=4, value=3, help="Ex. Café, almoço e jantar = 3 refeições diárias")
+    qtd_refeicoes = st.number_input("Quantas refeições você faz por dia?", min_value=1, max_value=4, value=None, help="Ex. Café, almoço e jantar = 3 refeições diárias",
+                                    placeholder = "Digite um número (1 a 4)")
     comer_entre_refeicoes = st.selectbox("Você costuma 'beliscar' entre as refeições?",
-                                        options=["Não consome", "Às vezes", "Frequentemente", "Sempre"])
+                                        options=["Não consome", "Às vezes", "Frequentemente", "Sempre"], index = None, placeholder = "Selecione uma opção")
     alimento_calorico = st.radio("Você consome alimentos hipercalóricos (frituras/doces) com frequência?", ["Sim", "Não"])
     
   
@@ -53,12 +54,15 @@ with col4:
                 "Entre 1 e 2 litros":2,
                 "Mais de 2 litros":3}
 
-    agua_texto = st.selectbox("Quantos litros de água você bebe por dia?", options=["Menos de 1 litro", "Entre 1 e 2 litros", "Mais de 2 litros"])
+    agua_texto = st.selectbox("Quantos litros de água você bebe por dia?", options=["Menos de 1 litro", "Entre 1 e 2 litros", "Mais de 2 litros"], index = None, placeholder = "Selecione uma opção")
 
-    consumo_agua_diario = mapa_agua[agua_texto]
+    if agua_texto:
+        consumo_agua_diario = mapa_agua[agua_texto]
+    else:
+        consumo_agua_diario = 0
 
     consumo_alcool = st.selectbox("Com que frequência você consome álcool?",
-                                options=["Não consome", "Às vezes", "Frequentemente", "Sempre"])
+                                options=["Não consome", "Às vezes", "Frequentemente", "Sempre"], index = None, placeholder = "Selecione uma opção")
 
     monitoramento = st.checkbox("Monitoro as minhas calorias ao longo do dia.")
     monitoramento_caloria = "Sim" if monitoramento else "Não"
@@ -74,27 +78,47 @@ col5, col6 = st.columns(2)
 with col5:
     mapa_faf = {"Não pratico atividade física":0, "1 a 2 dias por semana": 1, "3 a 4 dias por semana":2, "5 ou mais dias por semana":3}
 
-    faf_texto = st.selectbox("Com que frequência você faz atividade física?", options=list(mapa_faf.keys()))
+    faf_texto = st.selectbox("Com que frequência você faz atividade física?", options=list(mapa_faf.keys()), index = None, placeholder = "Selecione uma opção")
 
-    freq_atividade_fisica = mapa_faf[faf_texto]
+    if faf_texto:
+        freq_atividade_fisica = mapa_faf[faf_texto]
+    else:
+        freq_atividade_fisica = 0
+
 
     
     mapa_tue = {"0 a 2 horas por dia":0, "3 a 5 horas por dia": 1, "Mais de 5 horas por dia":2}
 
-    tue_texto = st.selectbox("Quanto tempo você usa celular/computador fora do trabalho?", options=list(mapa_tue.keys()))
+    tue_texto = st.selectbox("Quanto tempo você usa celular/computador fora do trabalho?", options=list(mapa_tue.keys()), index = None, placeholder = "Selecione uma opção")
 
-    tempo_disp_eletronico = mapa_tue[tue_texto]
+    if tue_texto:
+        tempo_disp_eletronico = mapa_tue[tue_texto]
+    else:
+        tempo_disp_eletronico = 0
 
 with col6:
     meio_transporte = st.selectbox("Qual seu principal meio de transporte?", options=["Transporte público", "Carro",
-                                                                                    "Caminhada", "Bicicleta", "Moto"])
+                                                                                    "Caminhada", "Bicicleta", "Moto"], index = None, placeholder = "Selecione uma opção")
     fumante = st.radio("Você fuma?", ["Sim", "Não"])
 
 st.markdown("----")
 
 # Botão de cálculo
 
-if st.button("🔍 Calcular Risco", type="primary", use_container_width=True):
+campos = (genero is None or 
+        idade is None or
+        altura is None or
+        peso is None or
+        consumo_vegetais is None or
+        comer_entre_refeicoes is None or
+        consumo_agua_diario is None or
+        consumo_alcool is None or
+        freq_atividade_fisica is None or
+        tempo_disp_eletronico is None or
+        meio_transporte is None)
+
+if st.button("🔍 Calcular Risco", disabled=campos):
+    
     #Cálculo IMC:  
     imc = peso / (altura ** 2)
     
@@ -170,29 +194,30 @@ if st.button("🔍 Calcular Risco", type="primary", use_container_width=True):
         predicao = pipeline.predict(input_tratado)[0]
         probabilidade = pipeline.predict_proba(input_tratado)[0]
 
-        mapa_resultado = {0:"Abaixo do peso/Peso normal", 1:"Sobrepeso (alerta)", 2:"Obesidade (risco elevado)"}
+        mapa_resultado = {0:"Perfil saudável", 1:"Chance de risco metabólico"}
 
         resultado_texto = mapa_resultado[predicao]
 
-        st.subheader(f"Resultado do modelo (avaliação de hábitos alimentares e estilo de vida): {resultado_texto}")
+        st.subheader(f"Resultado IA (avaliação de hábitos alimentares e estilo de vida): {resultado_texto}")
 
-        col_prob1, col_prob2, col_prob3 = st.columns(3)
+        col_prob1, col_prob2 = st.columns(2)
 
         with col_prob1:
-            st.metric("Prob. Normal", f"{probabilidade[0]:.1%}")
+            st.metric("Prob. Saudável", f"{probabilidade[0]:.1%}")
         with col_prob2:
-            st.metric("Prob. Sobrepeso", f"{probabilidade[1]:.1%}")
-        with col_prob3:
-            st.metric("Prob. Obesidade", f"{probabilidade[2]:.1%}")
+            st.metric("Prob. Sobrepeso/Obesidade", f"{probabilidade[1]:.1%}")
+
 
         if predicao == 0:
             st.success("Parabéns! Seus hábitos indicam um perfil saudável. Continue assim!")
-        elif predicao == 1:
-            st.warning("Atenção! O modelo identificou padrões de risco para sobrepeso. Considere rever seus hábitos diários.")
         else:
-            st.error("Alerta! O modelo identificou alta probabilidade de obesidade. Recomendamos buscar orientação médica especializada.")
+            st.error("Alerta! O modelo identificou alta probabilidade para risco de sobrepeso/obesidade (futuro ou atual). Recomendamos buscar orientação médica especializada.")
 
     except FileNotFoundError:
         st.error("Erro: O arquivo 'random_forest_modelo_pipeline.joblib' não foi encontrado na pasta. Verifique se você salvou o modelo.")
     except Exception as e:
         st.error(f"Ocorreu um erro inesperado no processamento: {e}")
+    
+    pass
+else:
+    st.warning("⚠️ Por favor, preencha todos os campos acima.")
