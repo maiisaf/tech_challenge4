@@ -33,6 +33,10 @@ O modelo escolhido foi o **XGBoost (Extreme Gradient Boosting)**, o algoritmo "e
 - `.streamlit/config.toml`: Configuração da paleta de cores e tema visual do app.
 - `modelo/`: Diretório contendo o modelo treinado em formato `.joblib`.
 - `requirements.txt`: Lista de bibliotecas necessárias para rodar o projeto.
+- `analise_ml.ipynb`: Código de análise exploratória e treinamento dos modelos de ML.
+- `dashboard.py`: Código principal da interface do painel analítico.
+- `base_de_dadas_csv`: Base de dados tratada usada para construção do painel analítico.
+- `Obesity.csv`: Base de dados inicial do trabalho.
 
 ## 💻 Como rodar este projeto localmente
 
