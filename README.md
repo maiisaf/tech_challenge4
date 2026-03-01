@@ -6,6 +6,8 @@ Este projeto utiliza Inteligência Artificial para prever o risco de obesidade c
 O projeto está em produção e pode ser testado através do link abaixo:
 👉 **[Calculadora de Risco - Streamlit Cloud](https://avaliador-risco-obesidade.streamlit.app/)**
 
+Painel analítico pode ser acessado **[clicando aqui](https://dashboard-acompanhamento-obesidade.streamlit.app)**
+
 ---
 
 ## 🛠️ Diferenciais do Projeto
